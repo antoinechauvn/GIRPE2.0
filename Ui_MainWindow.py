@@ -40,7 +40,7 @@ class Ui_MainWindow(FramelessWindow):
         self.clubInterface = Widget('Search Club', self)
         self.playerInterface = SearchPlayerWidget(self)
         self.partyInterface = PartyWidget(self)
-
+        print("test")
         # initialize layout
         self.initLayout()
 
