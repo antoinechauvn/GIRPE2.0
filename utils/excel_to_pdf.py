@@ -3,7 +3,7 @@ import shutil
 import win32com.client
 from PySide6.QtCore import QObject, QThread
 from openpyxl import load_workbook
-from jinja2 import Template
+from jinja2 import Template, Environment, StrictUndefined
 
 
 class ConversionThread(QThread):
@@ -115,12 +115,12 @@ class ExcelToPdfWorker(QObject):
         for row in ws.iter_rows():
             for cell in row:
                 if isinstance(cell.value, str):
-                    # Toujours traiter la cellule comme un template Jinja2
-                    try:
-                        rendered = Template(cell.value).render(variables)
-                        cell.value = rendered
-                    except Exception:
-                        pass  # Si ce n'est pas une balise valide, laisser tel quel
+                    value = cell.value
+                    for var_name, var_value in variables.items():
+                        # Remplacer la variable si elle existe dans la cellule
+                        value = value.replace('{{ ' + var_name + ' }}', str(var_value))
+                        value = value.replace('{{' + var_name + '}}', str(var_value))
+                    cell.value = value
 
         wb.save(excel_path)
         wb.close()  # Fermer le workbook après avoir sauvegardé

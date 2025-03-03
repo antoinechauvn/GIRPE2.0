@@ -93,7 +93,7 @@ class EditorWidget(QFrame):
 
     def unload_pdf(self):
         """Ferme le PDF actuel et nettoie les références."""
-        self.pdfView.setDocument(None)
+        #self.pdfView.setDocument(None)
         
         # Fermer et supprimer l'ancien document
         if self.pdfDocument:

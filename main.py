@@ -4,7 +4,7 @@ import sys
 # Third-party imports
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QIcon, QPixmap, QPainter
 from qfluentwidgets import (
     setTheme, Theme, InfoBar, InfoBarPosition
 )
@@ -87,7 +87,7 @@ class LoginWindow(Window, Ui_Form):
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
-        pixmap = QPixmap(":/newPrefix/images/background.jpg").scaled(
+        pixmap = QPixmap(r"c:\Users\CHAUVIN ANTOINE\PycharmProjects\GIRPE2.0\resource\images\news__20250225150811.jpg").scaled(
             self.background.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
         self.background.setPixmap(pixmap)
 

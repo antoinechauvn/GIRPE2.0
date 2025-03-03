@@ -58,14 +58,78 @@ class WelcomeWidget(QFrame):
         next_button.setFixedWidth(120)
         view.addWidget(next_button, align=Qt.AlignRight)
 
-        w = TeachingTip.make(
+        # Connecter le bouton à l'affichage du deuxième TeachingTip
+        next_button.clicked.connect(self.show_player_teaching_tip)
+
+        self.party_tip = TeachingTip.make(
             target=main_window.navigationInterface.widget(main_window.partyInterface.objectName()),
             view=view,
             duration=-1,
             tailPosition=TeachingTipTailPosition.LEFT,
             parent=main_window
         )
-        view.closed.connect(w.close)
+        view.closed.connect(self.party_tip.close)
+
+    def show_player_teaching_tip(self):
+        # Fermer le TeachingTip précédent
+        if hasattr(self, 'party_tip'):
+            self.party_tip.close()
+            
+        # Accéder à la fenêtre principale
+        main_window = self.window()
+        
+        # Créer et afficher le TeachingTip pour les joueurs
+        player_view = TeachingTipView(
+            icon=FIF.PEOPLE,
+            title='Gérer les joueurs',
+            content="Accédez à cette section pour gérer vos joueurs.\nVous pouvez ajouter, modifier ou rechercher des joueurs.",
+            image=None,
+            isClosable=True,
+            tailPosition=TeachingTipTailPosition.NONE,
+        )
+
+        # Ajouter un bouton pour continuer
+        player_next_button = PrimaryPushButton('Continuer')
+        player_next_button.setFixedWidth(120)
+        player_view.addWidget(player_next_button, align=Qt.AlignRight)
+        
+        # Connecter le bouton à l'affichage du Flyout final
+        player_next_button.clicked.connect(self.show_final_flyout)
+
+        self.player_tip = TeachingTip.make(
+            target=main_window.navigationInterface.widget(main_window.playerInterface.objectName()),
+            view=player_view,
+            duration=-1,
+            tailPosition=TeachingTipTailPosition.LEFT,
+            parent=main_window
+        )
+        player_view.closed.connect(self.player_tip.close)
+
+    def show_final_flyout(self):
+        # Fermer le TeachingTip précédent
+        if hasattr(self, 'player_tip'):
+            self.player_tip.close()
+
+        # Créer la vue finale
+        view = FlyoutView(
+            title='Tutoriel terminé !',
+            content="Félicitations ! Vous avez terminé le tutoriel de GIRPE 2.0.\nVous pouvez maintenant créer des parties et gérer vos joueurs.\n\nBon match !",
+            image=os.path.join(os.path.dirname(os.path.dirname(__file__)), "resource", "flyout2.jpg"),
+            isClosable=True
+        )
+
+        # Ajouter un bouton pour terminer
+        finish_button = PrimaryPushButton('Terminer')
+        finish_button.setFixedWidth(120)
+        view.addWidget(finish_button, align=Qt.AlignRight)
+
+        # Ajuster le layout
+        view.widgetLayout.insertSpacing(1, 5)
+        view.widgetLayout.addSpacing(5)
+
+        # Afficher le Flyout final
+        self.final_flyout = Flyout.make(view, self.tutorial_button, self, aniType=FlyoutAnimationType.FADE_IN)
+        view.closed.connect(self.final_flyout.close)
 
     def start_tutorial(self):
         # Créer la vue du Flyout

@@ -2,5 +2,6 @@
   <qresource prefix="newPrefix">
     <file>images/background.jpg</file>
     <file>images/logo.png</file>
+    <file>images/news__20250225150811.jpg</file>
   </qresource>
 </RCC>

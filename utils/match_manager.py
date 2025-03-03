@@ -57,6 +57,15 @@ class MatchManager(QObject):
         # Récupérer le thread de conversion
         thread = self.excel_worker.convert()
         if thread:
+
+            variables = {
+                'club1': club1,
+                'club2': club2
+            }
+
+            # Mettre à jour les variables dans le fichier Excel
+            ExcelToPdfWorker.update_variables(self.excel_worker.excel_path, variables)
+            
             # Fonction de callback qui se déconnecte après utilisation
             def on_finished():
                 try:

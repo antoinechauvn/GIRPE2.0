@@ -23,7 +23,8 @@ class Ui_Form(object):
         # Background image
         self.background = QLabel(Form)
         self.background.setObjectName(u"background")
-        self.background.setPixmap(QPixmap(u":/newPrefix/images/background.jpg"))
+        pixmap = QPixmap(r"c:\Users\CHAUVIN ANTOINE\PycharmProjects\GIRPE2.0\resource\images\news__20250225150811.jpg")
+        self.background.setPixmap(pixmap)
         self.background.setScaledContents(False)
         self.horizontalLayout.addWidget(self.background)
 
